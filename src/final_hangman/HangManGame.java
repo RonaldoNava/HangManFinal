@@ -1,6 +1,7 @@
 package final_hangman;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class HangManGame {
 
@@ -63,5 +64,37 @@ public class HangManGame {
     	return word;
     	
     }
-    }
-
+    public static int distributePoints(String difficulty){
+		if (difficulty.equals("Easy")) {
+			return 3;
+		}
+		else if (difficulty.equals("Normal")) {
+			return 4;
+		}
+		else if (difficulty.equals("Hard")) {
+			return 6;
+		}
+		return 0;
+		}
+    
+    public static void getPlayerGuess(Scanner choice, String defaultWord, ArrayList<Character> playerGuesses) {
+		System.out.println("Please enter a letter: ");
+		String letterGuess = choice.nextLine();
+		letterGuess = letterGuess.toUpperCase();
+		playerGuesses.add(letterGuess.charAt(0));
+	}
+    public static boolean printWordState(String defaultWord, ArrayList<Character> playerGuesses) {
+		int correctCount = 0;
+		for (int i = 0; i < defaultWord.length(); i++) {
+			if (playerGuesses.contains(defaultWord.charAt(i))){
+				System.out.print(defaultWord.charAt(i));
+				correctCount++;
+			} 
+			else {
+				System.out.print("-");
+			}
+		}
+		System.out.println();
+		return(defaultWord.length() == correctCount);
+	}
+}

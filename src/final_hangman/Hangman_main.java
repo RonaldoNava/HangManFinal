@@ -17,18 +17,51 @@ public class Hangman_main {
 	        System.out.println("Choose 'Default' or 'Custom'");
 	        Scanner choice = new Scanner(System.in);
 	        String userChoice = choice.nextLine();
-	        
+	        int userScore = 0;
+	        //default game
 	        if (userChoice.equals("Default")) {
 	            readDefaultWordsFromFile();
 	        
 	            System.out.println("Welcome To Ronny's Hangman!");
 	            System.out.println("Choose a Level:\n" + "  Hard\n" + "  Normal\n" + "  Easy\n" );
 	            String difficulty = choice.nextLine();
-	            System.out.println(HangManGame.chooseWordByDifficulty(difficulty, defaultWords));
-	            // Implement default game logic
-
+	            //get random word from defaultWords ArrayList based on difficulty chosen
+	            String defaultWord = HangManGame.chooseWordByDifficulty(difficulty, defaultWords);
+	            System.out.println(defaultWord);
+	           
+	            //begin default game logic
+	            ArrayList<Character> playerGuesses = new ArrayList<>();
+	            
+	            HangManGame.printWordState(defaultWord, playerGuesses);
+	            while(true){
+	            HangManGame.getPlayerGuess(choice, defaultWord, playerGuesses);
+	            //if player has won
+	            if(HangManGame.printWordState(defaultWord, playerGuesses)){
+	            	System.out.println("You Win!");
+	            	//add points to playerScore depending on difficulty they were on
+	            	System.out.println("+" + HangManGame.distributePoints(difficulty) + " Points!");
+	            	userScore += HangManGame.distributePoints(difficulty);
+	            	System.out.println("You have " + userScore + " points.");
+	            	break;
+	            }
+	            System.out.println("Please enter your guess for the word: ");
+	            if (choice.nextLine().toUpperCase().equals(defaultWord)) {
+	            	System.out.println("You Win!");
+	            	//add points to playerScore depending on difficulty they were on
+	            	System.out.println("+" + HangManGame.distributePoints(difficulty) + " Points!");
+	            	userScore += HangManGame.distributePoints(difficulty);
+	            	System.out.println("You have " + userScore + " points.");
+	            	break;
+	            }
+	            else {
+	            	System.out.println("Nope! Try Again.");
+	            }
+	            }
+	            
+	            
+	            
 	            //got write in and create file algorithms from w3 schools
-	        }
+	      }
 	        else if (userChoice.equals("Custom")) {
 	            System.out.println("Are you trying to access or create a Custom game? (type access/create)");
 	            String choiceGame = choice.nextLine();
@@ -37,7 +70,29 @@ public class Hangman_main {
 	                System.out.println("Enter the name of your Custom Game: ");
 	                String gameName = choice.nextLine();
 	                readCustomWordsFromFile(gameName);
-	                System.out.println(HangManGame.randomCustomWord(customWords));
+	                String customWord = HangManGame.randomCustomWord(customWords);
+	                System.out.println(customWord);
+	                
+	                ArrayList<Character> playerGuesses = new ArrayList<>();
+		            
+		            HangManGame.printWordState(customWord, playerGuesses);
+		            while(true){
+		            HangManGame.getPlayerGuess(choice, customWord, playerGuesses);
+		            //if player has won
+		            if(HangManGame.printWordState(customWord, playerGuesses)){
+		            	System.out.println("You Win!");
+		            	break;
+		            }
+		            System.out.println("Please enter your guess for the word: ");
+		            if (choice.nextLine().toUpperCase().equals(customWord)) {
+		            	System.out.println("You Win!");
+		            	break;
+		            }
+		            else {
+		            	System.out.println("Nope! Try Again.");
+		            	}
+		            }
+		            //got write in and create file algorithms from w3 schools
 	            
 	            } else if (choiceGame.equals("create")) {
 	                System.out.println("What would you like to name your game?");
@@ -52,6 +107,8 @@ public class Hangman_main {
 	        }
 	        choice.close();
 	}
+
+
 
 	    public static void createFile(String userGame) {
 	        try {
@@ -110,3 +167,4 @@ public class Hangman_main {
 	        }
 	}
 }
+
