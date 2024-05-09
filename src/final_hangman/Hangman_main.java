@@ -107,9 +107,6 @@ public class Hangman_main {
 	        }
 	        choice.close();
 	}
-
-
-
 	    public static void createFile(String userGame) {
 	        try {
 	            File myObj = new File(userGame + ".txt");

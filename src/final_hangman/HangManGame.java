@@ -30,7 +30,6 @@ public class HangManGame {
     public int getGuessesLeft() {
         return guessesLeft;
     }
-
     // Setter for guessesLeft
     public void setGuessesLeft(int guessesLeft) {
         this.guessesLeft = guessesLeft;
