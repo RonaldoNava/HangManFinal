@@ -5,35 +5,6 @@ import java.util.Scanner;
 
 public class HangManGame {
 
-    private String word;
-    private int guessesLeft;
-    private String difficulty;
-
-    // Constructor
-    public HangManGame(String word, int guessesLeft, String difficulty) {
-        this.word = word;
-        this.guessesLeft = guessesLeft;
-        this.difficulty = difficulty;
-    }
-
-    // Getter for word
-    public String getWord() {
-        return word;
-    }
-
-    // Setter for word
-    public void setWord(String word) {
-        this.word = word;
-    }
-
-    // Getter for guessesLeft
-    public int getGuessesLeft() {
-        return guessesLeft;
-    }
-    // Setter for guessesLeft
-    public void setGuessesLeft(int guessesLeft) {
-        this.guessesLeft = guessesLeft;
-    }
     //ChatGPT helped me construct method
     public static String chooseWordByDifficulty(String difficulty, ArrayList<String> defaultWords) {
         Random random = new Random();
@@ -76,11 +47,13 @@ public class HangManGame {
 		return 0;
 		}
     
-    public static void getPlayerGuess(Scanner choice, String defaultWord, ArrayList<Character> playerGuesses) {
+    public static boolean getPlayerGuess(Scanner choice, String defaultWord, ArrayList<Character> playerGuesses) {
 		System.out.println("Please enter a letter: ");
 		String letterGuess = choice.nextLine();
 		letterGuess = letterGuess.toUpperCase();
 		playerGuesses.add(letterGuess.charAt(0));
+		
+		return defaultWord.contains(letterGuess);
 	}
     public static boolean printWordState(String defaultWord, ArrayList<Character> playerGuesses) {
 		int correctCount = 0;
@@ -95,5 +68,33 @@ public class HangManGame {
 		}
 		System.out.println();
 		return(defaultWord.length() == correctCount);
+	}
+    public static void printHangedMan(int wrongCount) {
+		System.out.println(" -------");
+		System.out.println(" |     |");
+		if (wrongCount >= 1)
+			System.out.println(" O");
+		if (wrongCount >= 2) {
+			System.out.print("\\ ");
+			if (wrongCount >= 3) {
+				System.out.println("/");
+			}
+			else {
+				System.out.println("");
+			}
+		}
+		if (wrongCount >= 4)
+			System.out.println(" |");
+		if (wrongCount >= 5) {
+			System.out.print("/ ");
+			if (wrongCount >= 6) {
+				System.out.println("\\");
+			}
+			else {
+				System.out.println("");
+			}
+		}
+		System.out.println("");
+		System.out.println("");
 	}
 }
