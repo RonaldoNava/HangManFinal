@@ -3,8 +3,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class HangManGame {
-
+public class HangManGame { 
+	
     //ChatGPT helped me construct method
     public static String chooseWordByDifficulty(String difficulty, ArrayList<String> defaultWords) {
         Random random = new Random();
@@ -34,19 +34,22 @@ public class HangManGame {
     	return word;
     	
     }
+    //returns points to players if game is won depending on difficulty chosen
     public static int distributePoints(String difficulty){
-		if (difficulty.equals("Easy")) {
+    	String userDifficulty = difficulty.toUpperCase();
+		if (userDifficulty.equals("EASY")) {
 			return 3;
 		}
-		else if (difficulty.equals("Normal")) {
+		else if (userDifficulty.equals("NORMAL")) {
 			return 4;
 		}
-		else if (difficulty.equals("Hard")) {
+		else if (userDifficulty.equals("HARD")) {
 			return 6;
 		}
 		return 0;
 		}
-    
+    	
+    //returns true if the users guess is found in the word
     public static boolean getPlayerGuess(Scanner choice, String defaultWord, ArrayList<Character> playerGuesses) {
 		System.out.println("Please enter a letter: ");
 		String letterGuess = choice.nextLine();
@@ -96,5 +99,11 @@ public class HangManGame {
 		}
 		System.out.println("");
 		System.out.println("");
+	}
+    public static void printHS(Scanner choice, int userScore) {
+		System.out.println("Please Enter Name: ");
+		String userName = choice.nextLine();
+		ReadAndWriteFiles.writeToHighScores(userName, userScore);
+		ReadAndWriteFiles.displayHighScores();
 	}
 }
