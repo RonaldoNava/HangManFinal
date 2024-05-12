@@ -50,14 +50,10 @@ public class HangManGame {
 		}
     	
     //returns true if the users guess is found in the word
-    public static boolean getPlayerGuess(Scanner choice, String defaultWord, ArrayList<Character> playerGuesses) {
-		System.out.println("Please enter a letter: ");
-		String letterGuess = choice.nextLine();
-		letterGuess = letterGuess.toUpperCase();
-		playerGuesses.add(letterGuess.charAt(0));
-		
-		return defaultWord.contains(letterGuess);
-	}
+    public static boolean getPlayerGuess(String defaultWord, ArrayList<Character> playerGuesses, char guess) {
+    	playerGuesses.add(Character.toUpperCase(guess));
+        return defaultWord.contains(Character.toString(Character.toUpperCase(guess)));
+    }
     public static boolean printWordState(String defaultWord, ArrayList<Character> playerGuesses) {
 		int correctCount = 0;
 		for (int i = 0; i < defaultWord.length(); i++) {

@@ -2,15 +2,14 @@ package final_hangman;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Hangman_main {
-
-	// add a stack that shows the user already guessed characters in red
-
+	
 	public static void main(String[] args) {
 		System.out.println("Welcome to HANGMAN -by Ronny\n");
 		System.out.println("Choose 'Default' or 'Custom'");
-
+	    
 		Scanner choice = new Scanner(System.in);
 		String userChoice = choice.nextLine();
 		int userScore = 0;
@@ -46,9 +45,12 @@ public class Hangman_main {
 	            
 	            ArrayList<Character> playerGuesses = new ArrayList<>();
 	            int wrongCount = 0;
+	            Stack<Character> incorrectGuesses = new Stack<>();
+
 	            while(true) {
 	    			HangManGame.printHangedMan(wrongCount);
-
+	    			//show the incorrect guessed characters in order of how they were guessed.
+	    			
 	    			if (wrongCount >= 6) {
 	    				System.out.println("Game Over");
 	    				
@@ -56,21 +58,25 @@ public class Hangman_main {
 
 	    			HangManGame.printWordState(customWord, playerGuesses);
 	    			// adds a body part to the hanged man if the wrong character is guessed
-	    			if (!HangManGame.getPlayerGuess(choice, customWord, playerGuesses)) {
-	    				wrongCount++;
-	    				
+	    			if (!HangManGame.printWordState(customWord, playerGuesses)) {
+	    				System.out.println("Please enter a letter: ");
+	    		        char guess = new Scanner(System.in).next().toUpperCase().charAt(0);
+	    		        boolean isCorrectGuess = HangManGame.getPlayerGuess(customWord, playerGuesses, guess);
+	    		        if (!isCorrectGuess) {
+	    		            wrongCount++;
+	    		            incorrectGuesses.push(guess); // Add the incorrect guess to the stack
+	    		        }
+	    		        
 	    			}
 	    			// if player has won
 	    			if (HangManGame.printWordState(customWord, playerGuesses)) {
-	    				// add points to playerScore depending on difficulty they were on
 	    				System.out.println("You Win!");
 	    				break;
 	    				
 	    				}
-
+	    			//change so that you can only guess the word after the 6 failed guesses as a last resort
 	    			System.out.println("Please enter your guess for the word: ");
 	    			if (choice.nextLine().toUpperCase().equals(customWord)) {
-	    				// add points to playerScore depending on difficulty they were on
 	    				System.out.println("You Win!");
 	    				break;
 	    			} 
@@ -96,10 +102,7 @@ public class Hangman_main {
 	private static void defaultGame(Scanner choice, int userScore) {
 		ReadAndWriteFiles.readDefaultWordsFromFile();
 
-		System.out.println("Welcome To Ronny's Hangman!");
-		
-		
-			
+		System.out.println("Welcome To Ronny's Hangman!");	
 		System.out.println("Choose a Level:\n" + "  Hard\n" + "  Normal\n" + "  Easy\n");
 		String difficulty = choice.nextLine();
 		
@@ -115,8 +118,9 @@ public class Hangman_main {
 
 		// begin default game logic
 		ArrayList<Character> playerGuesses = new ArrayList<>();
-
 		int wrongCount = 0;
+		Stack<Character> incorrectGuesses = new Stack<>();
+		
 		while(true) {
 			HangManGame.printHangedMan(wrongCount);
 
@@ -126,12 +130,25 @@ public class Hangman_main {
 				break;
 				// printOutHighScores();
 			}
-
-			HangManGame.printWordState(defaultWord, playerGuesses);
 			// adds a body part to the hanged man if the wrong character is guessed
-			if (!HangManGame.getPlayerGuess(choice, defaultWord, playerGuesses)) {
-				wrongCount++;
-				
+			if (!HangManGame.printWordState(defaultWord, playerGuesses)) {
+				System.out.println("Please enter a letter: ");
+		        char guess = new Scanner(System.in).next().toUpperCase().charAt(0);
+		        //checks whether the user has already guessed that character and if so then discard the guess until user types a character that hasn't been guessed
+		        if (playerGuesses.contains(guess)) {
+		            System.out.println("'" + guess + "' has already been guessed.");
+		        } 
+		        else {
+		            //add the guess to the list of player guesses if hasn't been guessed before
+		            playerGuesses.add(guess);
+		            boolean isCorrectGuess = HangManGame.getPlayerGuess(defaultWord, playerGuesses, guess);
+		            
+		            if (!isCorrectGuess) {
+		            	wrongCount++;
+		            	incorrectGuesses.push(guess); // Add the incorrect guess to the stack
+		            	System.out.println("Incorrect Guesses: " + incorrectGuesses);
+		        	} 
+		        }
 			}
 			// if player has won
 			if (HangManGame.printWordState(defaultWord, playerGuesses)) {
@@ -144,7 +161,9 @@ public class Hangman_main {
 				break;
 			}
 
-			System.out.println("Please enter your guess for the word: ");
+			if(wrongCount == 6) {
+				System.out.println("Last Chance!\nPlease enter your guess for the word: ");
+			
 			if (choice.nextLine().toUpperCase().equals(defaultWord)) {
 				
 				// add points to playerScore depending on difficulty they were on
@@ -159,9 +178,8 @@ public class Hangman_main {
 				
 			}
 		}
-	}
+		}
 
+	}
 	
 }
-	
-
