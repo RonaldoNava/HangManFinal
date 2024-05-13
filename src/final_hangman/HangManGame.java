@@ -5,28 +5,42 @@ import java.util.Scanner;
 
 public class HangManGame { 
 	
-    //ChatGPT helped me construct method
     public static String chooseWordByDifficulty(String difficulty, ArrayList<String> defaultWords) {
         Random random = new Random();
-        String word = "";
+        String word = "";//initialize word
+        //get a random 4 letter word from defaultWords ArrayList
+        //ChatGPT helped write if-statement
         if (difficulty.equalsIgnoreCase("Easy")) {
+        	//keeps looking for word until a random 4 letter word is found (do-while loop)
             do {
                 word = defaultWords.get(random.nextInt(defaultWords.size()));
-            } while (word.length() != 4);
-        } else if (difficulty.equalsIgnoreCase("Normal")) {
+            } 
+            while (word.length() != 4);
+        } 
+      //get a random 5 letter word from defaultWords ArrayList
+        else if (difficulty.equalsIgnoreCase("Normal")) {
+        	//keeps looking for word until a random 5 letter word is found 
             do {
                 word = defaultWords.get(random.nextInt(defaultWords.size()));
-            } while (word.length() != 5);
-        } else if (difficulty.equalsIgnoreCase("Hard")) {
+            } 
+            while (word.length() != 5);
+        }
+      //get a random 6 letter word from defaultWords ArrayList
+        else if (difficulty.equalsIgnoreCase("Hard")) {
+        	//keeps looking for word until a random 6 letter word is found 
             do {
                 word = defaultWords.get(random.nextInt(defaultWords.size()));
-            } while (word.length() != 6);
-        } else {
+            } 
+            while (word.length() != 6);
+        }
+        //prompts user to choose a valid difficulty level
+        else {
             System.out.println("Invalid difficulty level. Please choose 'Easy', 'Normal', or 'Hard'.");
         }
-        
+        //returns random word based on user difficulty
         return word;
     }
+    //returns a random word from customWords ArrayList
     public static String randomCustomWord(ArrayList<String> customWords) {
     	Random random = new Random();
     	String word = "";
@@ -54,6 +68,8 @@ public class HangManGame {
     	playerGuesses.add(Character.toUpperCase(guess));
         return defaultWord.contains(Character.toString(Character.toUpperCase(guess)));
     }
+    //prints out dashes for unguessed characters and replaces the dashes with the correct character if player guesses it correctly
+    //youtube tutorial on how to do this
     public static boolean printWordState(String defaultWord, ArrayList<Character> playerGuesses) {
 		int correctCount = 0;
 		for (int i = 0; i < defaultWord.length(); i++) {
@@ -68,6 +84,8 @@ public class HangManGame {
 		System.out.println();
 		return(defaultWord.length() == correctCount);
 	}
+    //prints out a body part if the user guesses a character that is not in the word to be guessed
+    //also got from youtube tutorial
     public static void printHangedMan(int wrongCount) {
 		System.out.println(" -------");
 		System.out.println(" |     |");
@@ -96,6 +114,8 @@ public class HangManGame {
 		System.out.println("");
 		System.out.println("");
 	}
+    //prompts user to enter name to enter into HighScores file
+    //Updates and outputs current top 3 high scores along with names
     public static void printHS(Scanner choice, int userScore) {
 		System.out.println("Please Enter Name: ");
 		String userName = choice.nextLine();
