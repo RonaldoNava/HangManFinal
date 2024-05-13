@@ -20,6 +20,7 @@ public class Hangman_main {
 		}
 		//runs default game 
 		if (userChoice.toUpperCase().equals("DEFAULT")) {
+			System.out.println("Welcome To Ronny's Hangman!");
 			defaultGame(choice, userScore);
 		}
 		//runs custom game
@@ -114,18 +115,25 @@ public class Hangman_main {
 	        //also able to add words to already existing .txt files
 	        System.out.println("Would you like to add words to this Custom Game? (yes/no)");
 	        String contGame = choice.nextLine();
+	        while(!contGame.equalsIgnoreCase("yes") && !contGame.equalsIgnoreCase("no")){
+	        	System.out.println("Please type 'yes' or 'no'.");
+	        	contGame = choice.nextLine();
+	        }
 	        if (contGame.equalsIgnoreCase("yes")) {
 	            ReadAndWriteFiles.writeFile(createGame);
 	        }
-	    }
-	    System.out.println("Please type 'Access' or 'Create'");
+	        else if (contGame.equalsIgnoreCase("no")) {
+	            //System.out.println("Would you like to access a custom game?");
+	            customGame(choice);
+	           //maybe recursively call the customgame method and have it ask instead of the sysout above^^
+	        }
+	    }  
 	}
 	
 	private static void defaultGame(Scanner choice, int userScore) {
 		//puts in all of the words from a 1000-word .txt file into the defaultWords ArrayList
 		ReadAndWriteFiles.readDefaultWordsFromFile();
-
-		System.out.println("Welcome To Ronny's Hangman!");	
+	
 		System.out.println("Choose a Level:\n" + "  Hard\n" + "  Normal\n" + "  Easy\n");
 		//allows the user to choose between 3 difficulties
 		String difficulty = choice.nextLine();
@@ -133,8 +141,6 @@ public class Hangman_main {
 			   System.out.println("Please type 'Easy', 'Normal, or 'Hard'.");
 			   difficulty = choice.nextLine();
 		   }
-
-		
 		//get random word from defaultWords ArrayList based on difficulty chosen
 		String defaultWord = HangManGame.chooseWordByDifficulty(difficulty, ReadAndWriteFiles.defaultWords);
 		System.out.println(defaultWord);
@@ -150,7 +156,7 @@ public class Hangman_main {
 
 			if (wrongCount >= 6) {
 				System.out.println("Game Over");
-				//gets username and userscore and puts it into the HighScores.txt file and then displays the top 3 scores
+				//gets userName and userScore and puts it into the HighScores.txt file and then displays the top 3 scores
 				HangManGame.printHS(choice, userScore);
 				break;
 				
@@ -185,7 +191,13 @@ public class Hangman_main {
 				System.out.println("You Win! " + "+" + HangManGame.distributePoints(difficulty) + " Points!");
 				userScore += HangManGame.distributePoints(difficulty);
 				System.out.println("You have " + userScore + " points.");
+				System.out.println("Would you like to play again? (yes/no)");
+				String playAgain = choice.nextLine();
+				if(playAgain.equalsIgnoreCase("yes"))
+					defaultGame(choice, userScore);
+				else {
 				HangManGame.printHS(choice, userScore);
+				}
 				break;
 			}
 			//gives the user a final chance to guess what the word is if they have the complete hanged man
@@ -198,7 +210,13 @@ public class Hangman_main {
 				System.out.println("You Win! " + "+" + HangManGame.distributePoints(difficulty) + " Points!");
 				userScore += HangManGame.distributePoints(difficulty);
 				System.out.println("You have " + userScore + " points.");
+				System.out.println("Would you like to play again? (yes/no)");
+				String playAgain = choice.nextLine();
+				if(playAgain.equalsIgnoreCase("yes"))
+					defaultGame(choice, userScore);
+				else {
 				HangManGame.printHS(choice, userScore);
+				}
 				break;
 			} 
 			else {
@@ -207,7 +225,5 @@ public class Hangman_main {
 			}
 		}
 		}
-
 	}
-	
 }

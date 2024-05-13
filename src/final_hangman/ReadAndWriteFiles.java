@@ -68,7 +68,7 @@ public class ReadAndWriteFiles {
 			String name = parts[0];
 			int score = Integer.parseInt(parts[1]);
 			// Calculate the length of the combined string (name + score + comma)
-			int length = name.length() + String.valueOf(score).length() + 3;
+			int length = name.length() + String.valueOf(score).length() + 1;
 
 			// Display the bar of dashes
 			for (int i = 0; i < length; i++) {
@@ -138,7 +138,5 @@ public class ReadAndWriteFiles {
 			System.out.println("Custom game file not found.");
 			e.printStackTrace();
 		}
-
 	}
-
 }
